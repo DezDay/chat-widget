@@ -3,8 +3,8 @@
     // Create and inject styles
     const styles = `
         .n8n-chat-widget {
-            --chat--color-primary: var(--n8n-chat-primary-color, #854fff);
-            --chat--color-secondary: var(--n8n-chat-secondary-color, #6b3fd4);
+            --chat--color-primary: var(--n8n-chat-primary-color, #8fcaff);
+            --chat--color-secondary: var(--n8n-chat-secondary-color, #808080);
             --chat--color-background: var(--n8n-chat-background-color, #ffffff);
             --chat--color-font: var(--n8n-chat-font-color, #333333);
             font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -334,25 +334,25 @@
     // Default configuration
     const defaultConfig = {
         webhook: {
-            url: '',
-            route: ''
+            url: 'https://dezday.app.n8n.cloud/webhook/f406671e-c954-4691-b39a-66c90aa2f103/chat',
+            route: 'general'
         },
         branding: {
-            logo: '',
-            name: '',
-            welcomeText: '',
-            responseTimeText: '',
+            logo: 'https://static.wixstatic.com/media/a7e702_1b10ab1d6c1b4684acb195ae041428cd~mv2.png/v1/fill/w_166,h_166,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/a7e702_1b10ab1d6c1b4684acb195ae041428cd~mv2.png',
+            name: 'TheBudBrand', // Your company name
+            welcomeText: 'Hi 👋, how can we help?', //Welcome message
+            responseTimeText: 'We typically respond right away', //Response time message
             poweredBy: {
-                text: 'yo',
-                link: ''
+                text: '',  // Change this text
+                link: 'https://your-company-website.com'  // Change this link
             }
         },
         style: {
-            primaryColor: '',
-            secondaryColor: '',
-            position: 'right',
-            backgroundColor: '#ffffff',
-            fontColor: '#333333'
+            primaryColor: '#8fcaff', //Primary color
+            secondaryColor: '#808080', //Secondary color
+            position: 'right', //Position of the widget (left or right)
+            backgroundColor: '#ffffff', //Background color of the chat widget
+            fontColor: '#333333' //Text color for messages and interface
         }
     };
 
@@ -467,10 +467,23 @@
             chatContainer.querySelector('.new-conversation').style.display = 'none';
             chatInterface.classList.add('active');
 
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.className = 'chat-message bot';
-            botMessageDiv.textContent = Array.isArray(responseData) ? responseData[0].output : responseData.output;
-            messagesContainer.appendChild(botMessageDiv);
+             // Append the initial bot message
+            if (responseData && Array.isArray(responseData) && responseData.length > 0) {
+                const botMessage = responseData[0].output;
+                if (botMessage) {
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'chat-message bot';
+                    botMessageDiv.textContent = botMessage;
+                    messagesContainer.appendChild(botMessageDiv);
+                }
+            } else if (responseData && responseData.output) {
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.className = 'chat-message bot';
+                botMessageDiv.textContent = responseData.output;
+                messagesContainer.appendChild(botMessageDiv);
+            }
+
+
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         } catch (error) {
             console.error('Error:', error);
@@ -504,11 +517,23 @@
             });
             
             const data = await response.json();
+
+            // Check for valid data and its structure
+            if (data && Array.isArray(data) && data.length > 0) {
+                const botMessage = data[0].output;
+                if (botMessage) {
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'chat-message bot';
+                    botMessageDiv.textContent = botMessage;
+                    messagesContainer.appendChild(botMessageDiv);
+                }
+            } else if (data && data.output) {
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.className = 'chat-message bot';
+                botMessageDiv.textContent = data.output;
+                messagesContainer.appendChild(botMessageDiv);
+            }
             
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.className = 'chat-message bot';
-            botMessageDiv.textContent = Array.isArray(data) ? data[0].output : data.output;
-            messagesContainer.appendChild(botMessageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         } catch (error) {
             console.error('Error:', error);
