@@ -1,4 +1,4 @@
- // Chat Widget Script
+// Chat Widget Script
 (function() {
     // Create and inject styles
     const styles = `
@@ -102,18 +102,19 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            width: 100%;
-            padding: 16px 24px;
+            width: auto; /* Changed from 100% */
+            padding: 12px 18px; /* Reduced padding */
             background: linear-gradient(135deg, var(--chat--color-primary) 0%, var(--chat--color-secondary) 100%);
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1rem;
             transition: transform 0.3s;
             font-weight: 500;
             font-family: inherit;
             margin-bottom: 12px;
+            white-space: nowrap; /* Prevent text from wrapping */
         }
 
         .n8n-chat-widget .new-chat-btn:hover {
@@ -275,14 +276,15 @@
         /* Media Queries for Mobile */
         @media (max-width: 768px) {
             .n8n-chat-widget .chat-container {
-                width: 70%; /* Adjust width for smaller screens */
-                max-width: 400px; /* Maximum width for larger mobile screens */
-                height: 70vh; /* Adjust height to take up more screen space */
-                bottom: 0; /* Stick to the bottom */
+                width: 90%; /* Take up most of the screen width */
+                max-width: 400px; /* But don't exceed this width */
+                height: auto; /* Let the content determine the height */
+                max-height: 80vh; /* But limit the height to 80% of the viewport height */
+                bottom: 20px; /* More spacing from the bottom on mobile */
                 right: 0;
                 left: 0;
-                margin: auto; /* Center horizontally */
-                border-radius: 0; /* Remove border radius for a full-screen look */
+                margin: 0 auto; /* Center horizontally, remove vertical margin */
+                border-radius: 12px; /* Keep some border radius */
             }
 
             .n8n-chat-widget .chat-toggle {
@@ -308,14 +310,15 @@
 
         @media (max-width: 480px) {
              .n8n-chat-widget .chat-container {
-                width: 70%; /* Adjust width for smaller screens */
-                max-width: 70%; /* Maximum width for larger mobile screens */
-                height: 70vh; /* Adjust height to take up more screen space */
-                bottom: 0; /* Stick to the bottom */
+                width: 95%; /* Take up most of the screen width */
+                max-width: 95%; /* But don't exceed this width */
+                height: auto; /* Let the content determine the height */
+                max-height: 90vh; /* But limit the height to 80% of the viewport height */
+                bottom: 10px; /* More spacing from the bottom on mobile */
                 right: 0;
                 left: 0;
-                margin: auto; /* Center horizontally */
-                border-radius: 0; /* Remove border radius for a full-screen look */
+                margin: 0 auto; /* Center horizontally, remove vertical margin */
+                border-radius: 8px; /* Keep some border radius */
             }
         }
     `;
@@ -357,7 +360,7 @@
     };
 
     // Merge user config with defaults
-    const config = window.ChatWidgetConfig ? 
+    const config = window.ChatWidgetConfig ?
         {
             webhook: { ...defaultConfig.webhook, ...window.ChatWidgetConfig.webhook },
             branding: { ...defaultConfig.branding, ...window.ChatWidgetConfig.branding },
@@ -373,7 +376,7 @@
     // Create widget container
     const widgetContainer = document.createElement('div');
     widgetContainer.className = 'n8n-chat-widget';
-    
+
     // Set CSS variables for colors
     widgetContainer.style.setProperty('--n8n-chat-primary-color', config.style.primaryColor);
     widgetContainer.style.setProperty('--n8n-chat-secondary-color', config.style.secondaryColor);
@@ -382,7 +385,7 @@
 
     const chatContainer = document.createElement('div');
     chatContainer.className = `chat-container${config.style.position === 'left' ? ' position-left' : ''}`;
-    
+
     const newConversationHTML = `
         <div class="brand-header">
             <img src="${config.branding.logo}" alt="${config.branding.name}">
@@ -418,16 +421,16 @@
             </div>
         </div>
     `;
-    
+
     chatContainer.innerHTML = newConversationHTML + chatInterfaceHTML;
-    
+
     const toggleButton = document.createElement('button');
     toggleButton.className = `chat-toggle${config.style.position === 'left' ? ' position-left' : ''}`;
     toggleButton.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2.5 21.5l4.5-.838A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.476 0-2.886-.313-4.156-.878l-3.156.586.586-3.156A7.962 7.962 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z"/>
         </svg>`;
-    
+
     widgetContainer.appendChild(chatContainer);
     widgetContainer.appendChild(toggleButton);
     document.body.appendChild(widgetContainer);
@@ -463,7 +466,7 @@
             });
 
             const responseData = await response.json();
-            chatContainer.querySelector('.brand-header').style.display = 'none';
+            //Hide new conversation and show chat interface
             chatContainer.querySelector('.new-conversation').style.display = 'none';
             chatInterface.classList.add('active');
 
@@ -515,7 +518,7 @@
                 },
                 body: JSON.stringify(messageData)
             });
-            
+
             const data = await response.json();
 
             // Check for valid data and its structure
@@ -533,7 +536,7 @@
                 botMessageDiv.textContent = data.output;
                 messagesContainer.appendChild(botMessageDiv);
             }
-            
+
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         } catch (error) {
             console.error('Error:', error);
@@ -541,7 +544,7 @@
     }
 
     newChatBtn.addEventListener('click', startNewConversation);
-    
+
     sendButton.addEventListener('click', () => {
         const message = textarea.value.trim();
         if (message) {
@@ -549,7 +552,7 @@
             textarea.value = '';
         }
     });
-    
+
     textarea.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -560,7 +563,7 @@
             }
         }
     });
-    
+
     toggleButton.addEventListener('click', () => {
         chatContainer.classList.toggle('open');
     });
@@ -569,6 +572,10 @@
     const closeButtons = chatContainer.querySelectorAll('.close-button');
     closeButtons.forEach(button => {
         button.addEventListener('click', () => {
+            chatContainer.classList.remove('open');
+        });
+    });
+})();
             chatContainer.classList.remove('open');
         });
     });
