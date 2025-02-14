@@ -275,9 +275,9 @@
         /* Media Queries for Mobile */
         @media (max-width: 768px) {
             .n8n-chat-widget .chat-container {
-                width: 80%; /* Adjust width for smaller screens */
+                width: 70%; /* Adjust width for smaller screens */
                 max-width: 400px; /* Maximum width for larger mobile screens */
-                height: 80vh; /* Adjust height to take up more screen space */
+                height: 70vh; /* Adjust height to take up more screen space */
                 bottom: 0; /* Stick to the bottom */
                 right: 0;
                 left: 0;
@@ -308,9 +308,9 @@
 
         @media (max-width: 480px) {
              .n8n-chat-widget .chat-container {
-                width: 80%; /* Adjust width for smaller screens */
-                max-width: 80%; /* Maximum width for larger mobile screens */
-                height: 100vh; /* Adjust height to take up more screen space */
+                width: 70%; /* Adjust width for smaller screens */
+                max-width: 70%; /* Maximum width for larger mobile screens */
+                height: 70vh; /* Adjust height to take up more screen space */
                 bottom: 0; /* Stick to the bottom */
                 right: 0;
                 left: 0;
