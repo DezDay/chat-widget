@@ -275,7 +275,7 @@
         /* Media Queries for Mobile */
         @media (max-width: 768px) {
             .n8n-chat-widget .chat-container {
-                width: 90%; /* Adjust width for smaller screens */
+                width: 80%; /* Adjust width for smaller screens */
                 max-width: 400px; /* Maximum width for larger mobile screens */
                 height: 80vh; /* Adjust height to take up more screen space */
                 bottom: 0; /* Stick to the bottom */
