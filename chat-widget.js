@@ -308,8 +308,8 @@
 
         @media (max-width: 480px) {
              .n8n-chat-widget .chat-container {
-                width: 100%; /* Adjust width for smaller screens */
-                max-width: 100%; /* Maximum width for larger mobile screens */
+                width: 80%; /* Adjust width for smaller screens */
+                max-width: 80%; /* Maximum width for larger mobile screens */
                 height: 100vh; /* Adjust height to take up more screen space */
                 bottom: 0; /* Stick to the bottom */
                 right: 0;
