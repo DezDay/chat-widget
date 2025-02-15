@@ -1,4 +1,4 @@
- // Chat Widget Script
+// Chat Widget Script
 (function() {
     // Create and inject styles
     const styles = `
@@ -301,9 +301,12 @@
                 margin-bottom: 1rem;
             }
              .n8n-chat-widget .new-chat-btn {
-                 padding: 12px 18px;
-                 font-size: 1rem;
+                 padding: 16px 24px;
+                 font-size: 1.1rem;
             }
+              .n8n-chat-widget .chat-input button {
+                padding: 12px 24px; /* Ensure adequate tap target */
+              }
         }
 
         @media (max-width: 480px) {
@@ -317,7 +320,19 @@
                 margin: auto; /* Center horizontally */
                 border-radius: 0; /* Remove border radius for a full-screen look */
             }
+            .n8n-chat-widget .new-chat-btn {
+                 padding: 16px 24px;
+                 font-size: 1.1rem;
+            }
+              .n8n-chat-widget .chat-input button {
+                padding: 12px 24px; /* Ensure adequate tap target */
+              }
         }
+
+        /* Accessibility Considerations: */
+        /* - Ensure sufficient color contrast for readability. */
+        /* - Consider keyboard navigation for users who cannot use a mouse. */
+        /* - Ensure screen reader compatibility. */
     `;
 
     // Load Geist font
@@ -569,6 +584,31 @@
     const closeButtons = chatContainer.querySelectorAll('.close-button');
     closeButtons.forEach(button => {
         button.addEventListener('click', () => {
+            chatContainer.classList.remove('open');
+        });
+    });
+
+
+    // ----- BEGIN KEYBOARD HANDLING (Basic Example - REQUIRES REFINEMENT) -----
+    textarea.addEventListener('focus', () => {
+        //  Adjust the chat container's height or scroll the input area into view
+        //  when the keyboard appears.  This requires more robust logic.
+
+        //This is a very basic example and may not work perfectly in all scenarios
+        //  You'll likely need to calculate the keyboard height and adjust the
+        //  chat container's position or size accordingly.
+        console.log("focus")
+        chatContainer.style.bottom = '200px'; // Example: push the chat up slightly
+    });
+
+    textarea.addEventListener('blur', () => {
+        // Reset the chat container's position when the keyboard disappears
+        console.log("blur")
+        chatContainer.style.bottom = '20px';
+    });
+     // ----- END KEYBOARD HANDLING -----
+
+})();
             chatContainer.classList.remove('open');
         });
     });
