@@ -3,8 +3,8 @@
     // Create and inject styles
     const styles = `
         .n8n-chat-widget {
-            --chat--color-primary: var(--n8n-chat-primary-color, #8fcaff);
-            --chat--color-secondary: var(--n8n-chat-secondary-color, #808080);
+            --chat--color-primary: var(--n8n-chat-primary-color, #854fff);
+            --chat--color-secondary: var(--n8n-chat-secondary-color, #6b3fd4);
             --chat--color-background: var(--n8n-chat-background-color, #ffffff);
             --chat--color-font: var(--n8n-chat-font-color, #333333);
             font-family: 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -16,8 +16,8 @@
             right: 20px;
             z-index: 1000;
             display: none;
-            width: 380px; /* Default width */
-            height: 600px; /* Default height */
+            width: 380px;
+            height: 600px;
             background: var(--chat--color-background);
             border-radius: 12px;
             box-shadow: 0 8px 32px rgba(133, 79, 255, 0.15);
@@ -271,68 +271,6 @@
         .n8n-chat-widget .chat-footer a:hover {
             opacity: 1;
         }
-
-        /* Media Queries for Mobile */
-        @media (max-width: 768px) {
-            .n8n-chat-widget .chat-container {
-                width: 70%; /* Adjust width for smaller screens */
-                max-width: 400px; /* Maximum width for larger mobile screens */
-                height: 70vh; /* Adjust height to take up more screen space */
-                bottom: 0; /* Stick to the bottom */
-                right: 0;
-                left: 0;
-                margin: auto; /* Center horizontally */
-                border-radius: 0; /* Remove border radius for a full-screen look */
-            }
-
-            .n8n-chat-widget .chat-toggle {
-                width: 50px; /* Smaller toggle button */
-                height: 50px;
-                bottom: 10px; /* Adjust position */
-                right: 10px;
-            }
-
-            .n8n-chat-widget .new-conversation {
-              padding: 10px;
-            }
-
-            .n8n-chat-widget .welcome-text {
-                font-size: 1.5rem;
-                margin-bottom: 1rem;
-            }
-             .n8n-chat-widget .new-chat-btn {
-                 padding: 16px 24px;
-                 font-size: 1.1rem;
-            }
-              .n8n-chat-widget .chat-input button {
-                padding: 12px 24px; /* Ensure adequate tap target */
-              }
-        }
-
-        @media (max-width: 480px) {
-             .n8n-chat-widget .chat-container {
-                width: 70%; /* Adjust width for smaller screens */
-                max-width: 70%; /* Maximum width for larger mobile screens */
-                height: 70vh; /* Adjust height to take up more screen space */
-                bottom: 0; /* Stick to the bottom */
-                right: 0;
-                left: 0;
-                margin: auto; /* Center horizontally */
-                border-radius: 0; /* Remove border radius for a full-screen look */
-            }
-            .n8n-chat-widget .new-chat-btn {
-                 padding: 16px 24px;
-                 font-size: 1.1rem;
-            }
-              .n8n-chat-widget .chat-input button {
-                padding: 12px 24px; /* Ensure adequate tap target */
-              }
-        }
-
-        /* Accessibility Considerations: */
-        /* - Ensure sufficient color contrast for readability. */
-        /* - Consider keyboard navigation for users who cannot use a mouse. */
-        /* - Ensure screen reader compatibility. */
     `;
 
     // Load Geist font
@@ -349,25 +287,25 @@
     // Default configuration
     const defaultConfig = {
         webhook: {
-            url: 'https://dezday.app.n8n.cloud/webhook/f406671e-c954-4691-b39a-66c90aa2f103/chat',
-            route: 'general'
+            url: '',
+            route: ''
         },
         branding: {
-            logo: 'https://static.wixstatic.com/media/a7e702_1b10ab1d6c1b4684acb195ae041428cd~mv2.png/v1/fill/w_166,h_166,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/a7e702_1b10ab1d6c1b4684acb195ae041428cd~mv2.png',
-            name: 'TheBudBrand', // Your company name
-            welcomeText: 'Hi 👋, how can we help?', //Welcome message
-            responseTimeText: 'We typically respond right away', //Response time message
+            logo: '',
+            name: '',
+            welcomeText: '',
+            responseTimeText: '',
             poweredBy: {
-                text: '',  // Change this text
-                link: 'https://your-company-website.com'  // Change this link
+                text: 'Powered by n8n',
+                link: 'https://n8n.partnerlinks.io/m8a94i19zhqq?utm_source=nocodecreative.io'
             }
         },
         style: {
-            primaryColor: '#8fcaff', //Primary color
-            secondaryColor: '#808080', //Secondary color
-            position: 'right', //Position of the widget (left or right)
-            backgroundColor: '#ffffff', //Background color of the chat widget
-            fontColor: '#333333' //Text color for messages and interface
+            primaryColor: '',
+            secondaryColor: '',
+            position: 'right',
+            backgroundColor: '#ffffff',
+            fontColor: '#333333'
         }
     };
 
@@ -482,23 +420,10 @@
             chatContainer.querySelector('.new-conversation').style.display = 'none';
             chatInterface.classList.add('active');
 
-             // Append the initial bot message
-            if (responseData && Array.isArray(responseData) && responseData.length > 0) {
-                const botMessage = responseData[0].output;
-                if (botMessage) {
-                    const botMessageDiv = document.createElement('div');
-                    botMessageDiv.className = 'chat-message bot';
-                    botMessageDiv.textContent = botMessage;
-                    messagesContainer.appendChild(botMessageDiv);
-                }
-            } else if (responseData && responseData.output) {
-                const botMessageDiv = document.createElement('div');
-                botMessageDiv.className = 'chat-message bot';
-                botMessageDiv.textContent = responseData.output;
-                messagesContainer.appendChild(botMessageDiv);
-            }
-
-
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.className = 'chat-message bot';
+            botMessageDiv.textContent = Array.isArray(responseData) ? responseData[0].output : responseData.output;
+            messagesContainer.appendChild(botMessageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         } catch (error) {
             console.error('Error:', error);
@@ -532,23 +457,11 @@
             });
             
             const data = await response.json();
-
-            // Check for valid data and its structure
-            if (data && Array.isArray(data) && data.length > 0) {
-                const botMessage = data[0].output;
-                if (botMessage) {
-                    const botMessageDiv = document.createElement('div');
-                    botMessageDiv.className = 'chat-message bot';
-                    botMessageDiv.textContent = botMessage;
-                    messagesContainer.appendChild(botMessageDiv);
-                }
-            } else if (data && data.output) {
-                const botMessageDiv = document.createElement('div');
-                botMessageDiv.className = 'chat-message bot';
-                botMessageDiv.textContent = data.output;
-                messagesContainer.appendChild(botMessageDiv);
-            }
             
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.className = 'chat-message bot';
+            botMessageDiv.textContent = Array.isArray(data) ? data[0].output : data.output;
+            messagesContainer.appendChild(botMessageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         } catch (error) {
             console.error('Error:', error);
@@ -584,31 +497,6 @@
     const closeButtons = chatContainer.querySelectorAll('.close-button');
     closeButtons.forEach(button => {
         button.addEventListener('click', () => {
-            chatContainer.classList.remove('open');
-        });
-    });
-
-
-    // ----- BEGIN KEYBOARD HANDLING (Basic Example - REQUIRES REFINEMENT) -----
-    textarea.addEventListener('focus', () => {
-        //  Adjust the chat container's height or scroll the input area into view
-        //  when the keyboard appears.  This requires more robust logic.
-
-        //This is a very basic example and may not work perfectly in all scenarios
-        //  You'll likely need to calculate the keyboard height and adjust the
-        //  chat container's position or size accordingly.
-        console.log("focus")
-        chatContainer.style.bottom = '200px'; // Example: push the chat up slightly
-    });
-
-    textarea.addEventListener('blur', () => {
-        // Reset the chat container's position when the keyboard disappears
-        console.log("blur")
-        chatContainer.style.bottom = '20px';
-    });
-     // ----- END KEYBOARD HANDLING -----
-
-})();
             chatContainer.classList.remove('open');
         });
     });
